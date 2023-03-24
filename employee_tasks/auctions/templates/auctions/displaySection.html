@@ -1,0 +1,33 @@
+{% extends "auctions/layout.html" %}
+
+    {% block body %}
+        <h2> Active Listings </h2>
+        <form action="{% url 'displaySection' %}" method = "POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="section">Choose an item type:</label>
+            <select name="section" id="section">
+                <option selected>Choose category</option>
+                {% for category in categories %}
+                    <option value="{{section}}">{{section}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-warning">Check Category</button>
+        </form>
+        </div>
+        {% for employee in activeEmployees %}
+        <div class="row">
+        <div class="card" style="width: 18rem; height:15rem">
+            <img class="card-img-top" src="{{employee.imageURL}}" alt="{{employee.employeeName}} style="height:10 px">
+            <div class="card-body">
+                
+              <p class="card-text"><h1 style="color:rgb(0, 200, 255)">{{employee}}</h1><br>
+                {{employee.phone}} , {{employee.section}}</p>
+            </div>  
+           <br>
+       
+        </div>
+        
+    {% endfor %}
+   
+{% endblock %}  

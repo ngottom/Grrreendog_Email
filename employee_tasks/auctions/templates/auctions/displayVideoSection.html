@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<form action="{% url 'displayVideoSection' %}" method = "POST" class="my-4 ">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="videoSection">Sort by video type:</label>
+        <select name="videoSection" id="videoSection">
+             {% for section in videoSections %}
+                <option value="{{section}}">{{section}}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-warning">Check Section</button>
+    </form>
+    <button type="button" class="btn btn-info"><a href="{% url 'videos' %}" style="color:white">Show All Videos</a></button>
+    <a href="{% url 'uploadVideo' %}">Upload Video</a>
+    
+
+    </div>
+{% for video in sortedVideos %}
+<iframe width="503" height="894" src="{{video.videoLink}}" title="{{video.videoTitle}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+{% endfor %}
+
+{% endblock %}  

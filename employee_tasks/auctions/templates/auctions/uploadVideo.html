@@ -1,0 +1,27 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+
+<form>
+    Video Title:<input type="text" id="title"></input>Section:
+    <select class="" id="section" name="section" type="text">
+    
+    {% for section in sections %}
+    <option value="{{section}}">{{section}}</option>
+    {% endfor %}
+    </select>
+    Youtube <strong>Embed</strong> Link:
+    <input type="text" id="embedLink"></input>
+<button type="submit" class="btn btn-warning" style="margin:1vh">Submit Video</button>
+
+</form>
+<br>
+
+<h2>Note:
+</h2>
+<p>To get a Youtube embed link, rightclick a youtube video and select copy embed code, and paste only the 
+    youtube embed link, i.e. <a href="https://www.youtube.com/embed/ssz6dRsN7LQ">https://www.youtube.com/embed/ssz6dRsN7LQ</a>
+
+    
+</p>
+
+{% endblock %}  

@@ -1,0 +1,348 @@
+<!-- Special version of Bootstrap that only affects content wrapped in .bootstrap-iso -->
+<link rel="stylesheet" href="https://formden.com/static/cdn/bootstrap-iso.css" /> 
+
+<!--Font Awesome (added because you use icons in your prepend/append)-->
+<link rel="stylesheet" href="https://formden.com/static/cdn/font-awesome/4.4.0/css/font-awesome.min.css" />
+
+<!-- Inline CSS based on choices in "Settings" tab -->
+<style>.bootstrap-iso .formden_header h2, .bootstrap-iso .formden_header p, .bootstrap-iso form{font-family: Arial, Helvetica, sans-serif; color: black}.bootstrap-iso form button, .bootstrap-iso form button:hover{color: white !important;} .asteriskField{color: red;}
+html {
+  background-color: rgb(162, 236, 162);
+}
+.side-bar {
+  /* top:50vh;
+  right:50vh; */
+  /* position: fixed; */
+  width: 25vh;
+  border: 10px solid #34ae57;
+}
+.task {
+  background-color: white;
+  border-radius:10px;   
+  border-color:black;
+}
+
+.active{
+    background-color:green;
+}
+
+</style>
+<!-- <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"> -->
+<script>
+    // function insertTask() {
+        // load button dataset
+
+        // document.addEventListener('DomContentLoaded',()=>{
+        //     document.querySelectorAll('button.task').forEach(button =>
+        //         button.dataset.task = button.value)
+        //         console.log(button.value);
+            
+        // })
+        // load button dataset into text area
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('button.task').forEach(button =>
+            button.style.backgroundColor = "white"
+            )
+        })
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('button.task').forEach(button =>
+                button.onclick = () => {
+                        // document.querySelector("#tasks").replace(btnText,'');
+                        // button.style.backgroundColor="white";
+                    if (button.style.backgroundColor === "white") {
+                        // document.querySelector("#tasks").append(button.dataset.task, ", ");
+                        document.querySelector("#tasks").value += button.dataset.task + ", ";
+                        button.style.backgroundColor="lightGreen";
+                    }
+                    else {
+                        button.style.backgroundColor = "white";
+                        const textarea = document.querySelector('#tasks');
+                        const text = textarea.value;
+                        textarea.value = text.replace(button.dataset.task + ',', '');
+                    }
+                }
+            )
+        })
+
+        document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('button');
+
+    buttons.forEach(button => {
+    const text = button.textContent;
+    button.setAttribute('data-task', text);
+    });
+    })
+
+ function removeTask() {
+    const button = this; // "this" refers to the button that was clicked
+    const task = button.getAttribute('data-task'); // Get the value of the data-task attribute
+    const textarea = document.querySelector('#tasks'); // Get the textarea element
+    const text = textarea.value; // Get the current value of the textarea
+
+    // Replace the task plus a comma with an empty string in the textarea value
+    textarea.value = text.replace(task + ',', '');
+    }
+
+const buttons = document.querySelectorAll('button');
+
+buttons.forEach(button => {
+  button.addEventListener('click', removeTask);
+});
+
+   
+
+        
+
+</script>
+
+<!-- end js -->
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+<!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+<div class="bootstrap-iso">
+ <div class="container-fluid">
+  <div class="row">
+   <div class="col-md-6 col-sm-6 col-xs-12">
+    <form action = "{% url 'createTask' %}" method="POST">
+        {% csrf_token %}
+    <!-- Name Start -->
+     <div class="form-group ">
+      <label class="control-label " for="employeeName">
+       Employee Name
+      </label>
+      <select class="form-control" id="employeeName" name="employeeName" type="text"/>
+      {% for employee in allEmployees %}
+      <option value="{{employee.phone}}">{{employee.employeeName}}</option>
+      {% endfor %}
+      </select>
+     </div>
+    <!-- End Name -->
+    <div class="form-group ">
+        <label class="control-label " for="section">
+         Section
+        </label>
+        <select class="form-control" id="section" name="section" type="text"/>
+        {% for section in allSections %}
+        <option value="{{section}}">{{section}}</option>
+        {% endfor %}
+        </select>
+       </div>
+     <!-- Date -->
+     <div class="form-group ">
+      <label class="control-label " for="date">
+       Date
+      </label>
+      <div style="height:3px;width= 100px; background-color:green"></div>    
+
+      <div class="input-group">
+       <div class="input-group-addon">
+        <i class="fa fa-calendar">
+        </i>
+       <!-- </div>
+       <input class="form-control" id="date" name="date" placeholder="MM/DD/YYYY" type="text"/>
+      </div> -->
+
+
+      <!-- Choose Year -->
+      <div class="form-group">
+        <label for="startYear">Current Year:</label>
+        <select name="startYear" id="startYear">
+            <!-- <option selected>Choose year</option> -->
+                <option value="{{currentYear}}">{{currentYear}}</option>
+                <option value="{{nextYear}}">{{nextYear}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+        <label for="startMonth">Choose Month:</label>
+        <select name="startMonth" id="startMonth">
+            <!-- <option selected>Choose month</option> -->
+                <option value="{{currentMonth}}">{{currentMonth}}</option>
+                <option value="{{nextMonth}}">{{nextMonth}}</option>
+      </select>
+    </div>
+
+
+<!-- Select starting day -->
+    <div class="form-group">
+        <label for="startDay">Choose Start Day:</label>
+        <select name="startDay" id="startDay">
+            <!-- <option selected>Choose day</option> -->
+            {% for i in rangeDays %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+      </select>
+    </div>
+<!-- Select Starting Hour -->
+    <div class="form-group">
+        <div style="height:3px;width= 2000px; background-color:green"></div>    
+
+        <label for="startHour">Choose Starting Hour:</label>
+        <select name="startHour" id="startHour">
+            <!-- <option selected>Choose hour</option> -->
+            {% for i in rangeHours %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+      </select>
+    </div>
+
+    <div class="form-group">
+        <label for="startMinute">Choose Start Minute:</label>
+        <select name="startMinute" id="startMinute">
+            <!-- <option selected>Choose Minute</option> -->
+                <option value="00">00</option>
+                <option value="30">30</option>
+
+      </select>
+      <div style="height:3px;width= 2000px; background-color:green"></div>    
+
+    </div>
+
+
+        <!-- end -->
+
+        <!-- divider line -->
+    <div style="height:3px;width= 2000px; background-color:red"></div>    
+    <!-- Select Starting Hour -->
+    <div class="form-group">
+        <label for="endHour">Choose Ending Hour:</label>
+        <select name="endHour" id="endHour">
+            <!-- <option selected>Choose hour</option> -->
+            {% for i in rangeHours %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+      </select>
+    </div>
+    <!-- Choose end Minutes -->
+    <div class="form-group">
+        <label for="endMinute">Choose End Minutes:</label>
+        <select name="endMinute" id="endMinute">
+            <!-- <option selected>Choose Minute</option> -->
+                <option value="00">00</option>
+                <option value="30">30</option>
+
+      </select>
+    </div>
+    <div style="height:3px;width= 2000px; background-color:red"></div>    
+
+     </div>
+     
+     <div class="form-group ">
+      <label class="control-label " for="extras">
+       Above & Beyond
+      </label>
+      <input class="form-control" id="extras" name="extras" type="text"/>
+     </div>
+     <!-- extraPrice -->
+     <div class="form-group ">
+      <label class="control-label " for="extrasPrice">
+       Extra Pay $
+      </label>
+      <input type="number" name="extrasPrice" class="form-control" id="extrasPrice" placeholder="Enter price"
+            min = 0 step="1" value=0>
+    </div>
+    <!-- Tasks -->
+     <div class="form-group ">
+      <label class="control-label " for="tasks">
+       Tasks
+      </label>
+      <textarea class="form-control" cols="40" id="tasks" name="tasks" rows="10"></textarea>
+     </div>
+     <div class="form-group">
+      <div>
+       <button class="btn btn-primary " name="submit" type="submit">
+        Submit
+       </button>
+      </div>
+     </div>
+    </form>
+   </div>
+  </div>
+ </div>
+    <div class="side-bar">
+        <h1 style="text-align:center;color:rgb(251, 150, 25)">Salon</h1><br>
+        
+        <button class="task" id="task1" data-task="Sanitize Tables">Sanitize Salon Tables</button>
+        <button class="task" id="task2" data-task="Sanitize Floors">Sanitize Salon Floors</button>
+        <button class="task" data-task="Mop Floors">Mop Salon Floors</button>
+        <button class="task" data-task="Wipedown Walls">Wipedown Salon Walls</button>
+        <button class="task" data-task="Clean Brushes & Combs" value="Clean Brushes & Combs">Clean Brushes+Combs</button>
+    </div>
+
+    <div class="side-bar">
+        <h1 style="text-align:center;color:rgb(251, 150, 25)">Daycare</h1><br>
+        <button class="task" data-task="Mopping Daycare">Mopping Daycare</button>
+        <button class="task" data-task="Sweeping Daycare">Sweeping Daycare</button>
+        <button class="task" data-task="Sanitize Daycare">Sanitize Daycare</button>
+        <button class="task" data-task="Straighten supplies">Straighten Daycare Supplies</button>
+        <button class="task" data-task="">Wipe Daycare Window Sills</button>
+        <button class="task" data-task="">Clean daycare tarps</button>
+        <button class="task" data-task="">Straighten Supplies</button>
+        <button class="task" data-task="">Sweep Daycare Floors</button>
+        <button class="task" data-task="">Wash Dog Toys</button>
+        <button class="task" data-task="">Wash Licky Pads</button>
+
+
+        
+
+
+
+
+    </div>
+    <div class="side-bar">
+        <h1 style="text-align:center;color:rgb(251, 150, 25)">Kitchen</h1><br>
+        <button class="task" data-task="">Refrigerator Wiped Down</button>
+        <button class="task" data-task="">Microwave</button>
+        <button class="task" data-task="">Dog Crates When Used</button>
+        <button class="task" data-task="">Rugs for Naps</button>
+        <button class="task" data-task="">Corals</button>
+        <button class="task" data-task="">Rug In Front of Sink</button>
+        <button class="task" data-task="">Cabinets</button>
+        <button class="task" data-task="">Dog Crates(when used)</button>
+        <button class="task" data-task="">Counters+Edges</button>
+        <button class="task" data-task="">Kitchen Sink and Table Floors</button>
+</div>
+
+<div class="side-bar" style="right:0">
+    <h1 style="text-align:center;color:rgb(251, 150, 25)">Daily</h1><br>
+    <button class="task" data-task="">Safety Check</button>
+    <button class="task" data-task="">All Dishes</button>
+    <button class="task" data-task="">Sink</button>
+    <button class="task" data-task="">Counter Top</button>
+    <button class="task" data-task="">Sweep Floors</button>
+    <button class="task" data-task="">Mop Floor</button>
+    <button class="task" data-task="">Kitchen Tables</button>
+</div>
+
+<div class="side-bar" style="right:0">
+    <h1 style="text-align:center;color:rgb(251, 150, 25)">Supplies</h1><br>
+    <button class="task" data-task="">Check # Toilet Paper</button>
+    <button class="task" data-task="">Check # Paper Towels</button>
+    <button class="task" data-task="">Check # Kennel</button>
+    
+</div>
+
+<div class="side-bar" style="right:0">
+    <h1 style="text-align:center;color:rgb(251, 150, 25)">Bathroom</h1><br>
+    <button class="task" data-task="">Bathroom Sink + Toilet</button>
+    <button class="task" data-task="">Bathroom Floors</button>
+    <button class="task" data-task="">Bathroom Shelves</button>
+    <button class="task" data-task="">Bathroom Mats</button>
+    <button class="task" data-task="">Bathroom Sink</button>
+
+
+</div>
+
+<div class="side-bar" style="right:0">
+    <h1 style="text-align:center;color:rgb(251, 150, 25)">Bathing Room</h1><br>
+    <button class="task" data-task="">2 Tubs</button>
+    <button class="task" data-task="">Bathing Floors</button>
+    <button class="task" data-task="">Bathing Mats</button>
+    <button class="task" data-task="">Shampoo Machine</button>
+    <button class="task" data-task="">Slop sink</button>
+</div>
+
+{% endblock %}

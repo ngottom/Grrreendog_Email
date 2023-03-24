@@ -1,0 +1,128 @@
+<script>
+    console.log('hi');
+    // document.addEventListener('DOMContentLoaded', () => {
+    //         document.querySelectorAll('h3.task').forEach(h3 =>
+    //         h3.task.split(' ')[0] = 'test';
+    //         console.log(h3.task.split(' ')[0]))
+            
+    // }
+    document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('p.month').forEach(p => {
+        switch(p.innerHTML){
+            case "1":
+            p.innerHTML = 'January';
+            break;
+            case "2":
+            p.innerHTML = 'February';
+            break;
+            case "3":
+            p.innerHTML = 'March';
+            break;
+            case "4":
+            p.innerHTML = 'April';
+            break;
+            case "5":
+            p.innerHTML = 'May';
+            break;
+            case "6":
+            p.innerHTML = 'June';
+            break;
+            case "7":
+            p.innerHTML = 'July';
+            break;
+            case "8":
+            p.innerHTML = 'August';
+            break;
+            case "9":
+            p.innerHTML = 'September';
+            break;
+            case "10":
+            p.innerHTML = 'October';
+            break;
+            case "11":
+            p.innerHTML = 'November';
+            break;
+            case "12":
+            p.innerHTML = 'December';
+            break;
+            
+        }
+    });
+});
+</script>
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<!-- <div class="row mx-3">
+    {% if user.is_authenticated %}
+        {% if isListingInWatchlist %}
+        <form action="{% url 'removeWatchlist' id=employeeData.phone %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Remove From Watchlist</button> 
+        </form>
+        {% else %}
+        <form action="{% url 'addWatchlist' id=employeeData.phone %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Add to Watchlist</button> 
+            </form>
+        {% endif %}
+    {% endif %}
+</div> -->
+
+
+<div class="title">
+<h2>{{employeeData.employeeName}}</h2>
+</div>
+<img src="{{employeeData.imageURL}}" class="listPage" style="height:50vh;width:50vh"><br>
+<p> <h3 class="description">{{listingData.description}}<br>
+<h5>{{employeeData.phone}}</h5>
+<h5>{{employeeData.section}}</h5>
+</p>
+
+<hr></hr>
+
+<h1 style="color:green;text-align:center;">Weekly Tasks</h1>
+{% for task in employeeTasks %}
+<div class="card border-light mb-3 text-center">
+    
+
+    <div class="card-body">
+                
+              <p class="card-text"><h4 style="color:rgb(0, 200, 255)">{{task.section}}</h4>
+                
+                <h3 class="task" style="color:red"> <p class="month">{{task.startMonth}}</p> Day: {{task.startDay}}, Year: {{task.startYear}},</h3> <br>
+        Shift: {{task.startHour}}:{{task.startMinute}} - {{task.endHour}}: {{task.endMinute}} P.M.</h3><br>
+        <h5 style="color:green">{{task.tasks}}</h5> 
+            </div>  
+            <h4>{{task.extras}}</h4>
+            <h6>${{task.extrasPrice}}</h6>
+            <p>Created by {{task.author}}: {{task.datetime}}</p>
+        
+{% endfor %}    
+           <br>
+</div>
+    
+
+<hr></hr>
+    <h2>Report Problem</h2>
+    {% if user.is_authenticated %}
+    
+    <form action = "{% url 'addEmployeeComment' phone=employeeData.phone %}" method="POST">
+        {% csrf_token %}
+        <input type="textarea" style="width:50vh; height:6vh" name="newComment" placeholder="Add new comment">
+        <button type="submit" class="btn btn-warning">Submit</button>     
+    </form>
+    {% endif %}
+</div> 
+<div>
+    {% for comment in comments %}
+    <p><i><br>{{comment.datetime}} EST</p></i>
+
+    <li class="list-group-item"> {{comment.message}} 
+    <br><ul><i>posted by <strong style="color:green">{{comment.author}}</strong></ul></i>
+    </li>
+     
+    {% endfor %}
+</div>
+{% endblock %}    

@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="shortcut icon" href="http://www.bamboodoghotel.com/wp-content/uploads/2015/07/PAW.png">
+        <title>{% block title %}Tasks{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+        <script src="{% static 'auctions/scripts.js' %}"></script>
+        <style>
+            html {
+                background-color: rgb(162, 236, 162);
+                margin-left:0.5vh;
+                margin-right:0vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="nav-bar" class="d-flex flex-row" style="background-color: rgb(142, 214, 142)"">
+               <a href="/"><img src="https://www.grrreendog.com/wp-content/uploads/2019/02/grrreendog-grooming-and-spa-daycamp-big.png" style="height:10vh;margin:0" alt="greendog_logo"> </a>
+               <a href="/"><h2 style="color:black; font-family:'Comic Sans MS', Comic, sans-serif">Tasks</h2></a>
+
+        </div>
+
+
+        <div>
+            {% if user.is_authenticated %}
+                Signed in as <strong>{{ user.username }}</strong>.
+            {% else %}
+                Not signed in.
+            {% endif %}
+        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'employees' %}">Active Employees</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'createTask' %}">Create Task</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'active' %}">Inventory</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'employeeComments' %}">Employee Noticeboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'inventoryComments' %}">Inventory Notices</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'create' %}">Create Inventory</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'videos' %}">Videos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+            </li>
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
+            </li> -->
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            {% endif %}
+        </ul>
+        <hr>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
+

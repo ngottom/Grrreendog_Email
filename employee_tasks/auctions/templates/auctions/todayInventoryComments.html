@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+    {% block body %}
+
+<div>
+    <h1 style="color:Green">Employee Reports</h1>
+    <form action="{% url 'sortedInventory' %}" method = "POST">
+        {% csrf_token %}
+            <div class="form-group">
+      <label for="month">Choose Month:</label>
+      <select name="month" id="month">
+            {% for i in rangeMonths %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+      </select>
+      <label for="startDay">Choose Day:</label>
+      <select name="day" id="day">
+            {% for i in rangeDays %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+      </select>
+    <div class="form-group">
+      <label for="startYear">Choose Year:</label>
+      <select name="year" id="year">
+            {% for i in rangeYear %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+    </select>
+  </div>
+
+            <button type="submit" class="btn btn-warning">Check Date</button>
+            <button type="submit" class="btn btn-success"><a href="employeeComments" style="color:white">Reset Employee Reports</a></button>
+
+        </form>
+    {% for comment in comments %}
+    <p style="color:orchid; font-size:20px">{{comment.datetime}} EST </p>
+    <p style="color:green">posted by <strong>{{comment.author}}</strong></p>
+    <li class="list-group-item"> {{comment.message}} 
+    
+    
+    </li>
+     
+    {% endfor %}
+</div>
+{% endblock %}    

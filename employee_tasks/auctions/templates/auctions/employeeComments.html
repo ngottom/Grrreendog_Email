@@ -1,0 +1,59 @@
+{% extends "auctions/layout.html" %}
+
+    {% block body %}
+
+<div>
+    <h1 style="color:Green">Employee Reports</h1>
+    <form action="{% url 'sortNotices' %}" method = "POST">
+        {% csrf_token %}
+            <div class="form-group">
+      <label for="month">Choose Month:</label>
+      <select name="month" id="month">
+            {% for i in rangeMonths %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+      </select>
+      <label for="startDay">Choose Day:</label>
+      <select name="day" id="day">
+            {% for i in rangeDays %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+      </select>
+    <div class="form-group">
+      <label for="startYear">Choose Year:</label>
+      <select name="year" id="year">
+            {% for i in rangeYears %}
+                <option value="{{i}}">{{i}}</option>
+            {% endfor %}
+    </select>
+  </div>
+
+            <button type="submit" class="btn btn-warning">Check Date</button>
+        </form>
+
+            <button type="submit" class="btn btn-success"><a href="todayEmployeeComments" style="color:white">Check Today's Reports</a></button>
+            <!-- Beginning of Monthly Reports -->
+            <!-- <h1 style="color:rgb(0, 96, 128)">Monthly Reports</h1>
+            <form action="{% url 'sortNotices' %}" method = "POST">
+                {% csrf_token %}
+                    <div class="form-group">
+              <label for="month">Choose Month:</label>
+              <select name="month" id="month">
+                    {% for i in rangeMonths %}
+                        <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+              </select>
+            </form>
+            <button type="submit" class="btn btn-success"><a href="monthlyEmployeeComments" style="color:white">Check Monthly Report</a></button> -->
+            <!-- End of Monthly Reports Div -->
+
+    {% for comment in comments %}
+    <li class="list-group-item"></li>
+    <p style="color:orchid; font-size:20px">{{comment.datetime}} EST </p>
+     {{comment.message}} 
+        <ul style="color:green"><i>posted by <strong>{{comment.author}}</strong></p></i></ul>
+    </li>
+     
+    {% endfor %}
+</div>
+{% endblock %}    

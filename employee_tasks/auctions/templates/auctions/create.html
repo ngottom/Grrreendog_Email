@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="color:purple">Create Inventory Listing</h2>
+    <form action="{% url 'create' %}" method = "POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="title" class="form-label">Title (REQUIRED)</label>
+            <input type="text" name="title" class="form-control" id="title" placeholder="Enter Title">
+          </div>        
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" name="description" class="form-control" id="description" placeholder="Enter Description">
+        </div>        
+        <div class="mb-3">
+            <label for="imageURL" class="form-label">ImageURL (Default: QuestionMark)</label>
+            <input type="text" name="imageURL" class="form-control" id="imageURL" placeholder="https://...">
+        </div>        
+        <!-- <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" name="price" class="form-control" id="price" placeholder="Enter price"
+            min = 1 step=".01">
+        </div>         -->
+
+        <div class="form-group">
+            <label for="category"><b><i>Choose Item Section:</i></b></label>
+            <select name="category" id="category">
+                <option selected>Choose category</option>
+                {% for category in categories %}
+                    <option value="{{category}}">{{category}}</option>
+                {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-danger">Create New Listing</button>
+        <button type="submit" class="btn btn-success"><a href="active" style="color:white">Back To Inventory</a></button>
+
+    </form>
+    <br>
+
+    
+{% endblock %}

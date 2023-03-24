@@ -1,0 +1,9 @@
+html{
+  background-color: black;
+}
+#sidebar {
+    right: 0;
+    position: fixed;
+    width: 200px;
+    border-right: 11px solid #34ae57;
+  }

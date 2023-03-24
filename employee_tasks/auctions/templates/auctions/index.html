@@ -1,0 +1,36 @@
+{% extends "auctions/layout.html" %}
+
+    {% block body %}
+        <h2> Active Listings </h2>
+        <!-- change this to displaySection -->
+        <form action="{% url 'displaySection' %}" method = "POST" class="my-4 ">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="section">Sort by section type:</label>
+            <select name="section" id="section">d
+                 {% for section in sections %}
+                    <option value="{{section}}">{{section}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-warning">Check Section</button>
+        </form>
+        <button type="button" class="btn btn-info"><a href="{% url 'employees' %}" style="color:white">Show All Employees</a></button>
+
+        </div>
+        <div class="row">
+         {% for employee in activeEmployees %}
+        
+        <div class="card border-light mb-3 text-center" style="max-width: 18%; height:18%;">
+            <img class="card-img-top" src="{{employee.imageURL}}" alt="{{employee.employeeName}}>
+            <div class="card-body">
+                
+              <p class="card-text"><h1 style="color:rgb(0, 200, 255)">{{employee.employeeName}}</h1><br>
+                {{employee.phone}} , {{employee.section}}</p>
+                <button type="button" class="btn btn-info"><a href="{% url 'employeePage' phone=employee.phone %}" style="color:white">Go to Page</a></button>
+
+            </div>  
+           <br>
+    {% endfor %}
+        </div>
+
+{% endblock %}  

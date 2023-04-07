@@ -475,24 +475,24 @@ def addEmployeeComment(request, phone):
 
     #ty ML
     # Get the email address of the logged-in user
-    sender_email = 'grrreendog1@gmail.com'
+    # sender_email = 'noreply@grrreendog.pythonanywhere.com'
     # print(f"{sender_email} senderemail")
     
     # Set the recipient email address
-    recipient_email = 'tomtesla97@gmail.com'
+    # recipient_email = 'tomtesla97@gmail.com'
     
     # Set the email subject and body
-    subject = 'New comment on employee ' + str(currentUser)
-    body = 'Hi,\n\nA new comment has been added to the profile of ' + str(employee) + '.\n\nMessage: ' + message + '\n\nRegards,\n\n' + str(currentUser)
+    # subject = 'New comment on employee ' + str(currentUser)
+    # body = 'Hi,\n\nA new comment has been added to the profile of ' + str(employee) + '.\n\nMessage: ' + message + '\n\nRegards,\n\n' + str(currentUser)
     
     # Use the send_mail function to send the email
-    send_mail(
-        subject,
-        body,
-        sender_email,
-        [recipient_email],
-        fail_silently=False,
-    )
+    # send_mail(
+    #     subject,
+    #     body,
+    #     sender_email,
+    #     [recipient_email],
+    #     fail_silently=False,
+    # )
 
     return HttpResponseRedirect(reverse("employeePage", args=(phone, )))
 

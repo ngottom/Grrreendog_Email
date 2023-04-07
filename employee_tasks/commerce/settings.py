@@ -11,13 +11,16 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+
 #for loading .env pw
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '0cd44c4fd56cd0'
+EMAIL_HOST_PASSWORD = 'c9996d973fc333'
+EMAIL_PORT = '2525'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #static files
@@ -34,9 +37,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','grrreendog.pythonanywhere.com']
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 EMAIL_USE_TLS = True
 
 # Application definition

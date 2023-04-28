@@ -23,6 +23,8 @@ urlpatterns = [
     path("displaySection", views.displaySection, name="displaySection"),
     path("createTask", views.createTask, name="createTask"),
     path("addEmployeeComment/<int:phone>", views.addEmployeeComment, name="addEmployeeComment"),
+    path("deleteEmployee/<int:phone>", views.deleteEmployee, name="deleteEmployee"),
+
     path("videos", views.videos, name="videos"),
     path("displayVideoSection", views.displayVideoSection, name="displayVideoSection"),
     path("uploadVideo", views.uploadVideo, name="uploadVideo"),
@@ -35,6 +37,7 @@ urlpatterns = [
     path("sortNotices", views.sortNotices, name="sortNotices"),
     path("todayInventoryComments", views.todayInventoryComments, name="todayInventoryComments"),
     path("todayEmployeeComments", views.todayEmployeeComments, name="todayEmployeeComments"),
+    path("createEmployee", views.createEmployee, name="createEmployee"),
 
 
 

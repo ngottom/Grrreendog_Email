@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="color:purple">Create New Employee</h2>
+    <form action="{% url 'createEmployee' %}" method = "POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Name (REQUIRED)</label>
+            <input type="text" name="employeeName" class="form-control" id="employeeName" placeholder="Enter Name">
+          </div>        
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control" id="phone" placeholder="Enter Number(without dashes)">
+        
+        <div class="mb-3">
+            <label for="imageURL" class="form-label">ImageURL (If none, profile image defaults to QuestionMark)</label>
+            <input type="text" name="imageURL" class="form-control" id="imageURL" placeholder="https://...">
+        </div> 
+        <div class="form-group">
+            <label for="section"><b><i>Choose Section:</i></b></label>
+            <select name="section" id="section">
+                <option selected>Choose section</option>
+                {% for section in sections %}
+                    <option value="{{section}}">{{section}}</option>
+                {% endfor %}
+          </select>
+        </div>       
+        <button type="submit" class="btn btn-danger">Create New Employee</button>
+
+        </form>
+        
+
+        
+        <button type="submit" class="btn btn-success"><a href="employees" style="color:white">Back To Employees</a></button>
+    <br>
+
+    
+{% endblock %}

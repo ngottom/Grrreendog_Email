@@ -14,6 +14,10 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import send_mail
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
+from django.http import HttpResponseForbidden
+
 
 
 def index(request):
@@ -85,6 +89,31 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+def createEmployee(request):
+    if request.method == "GET":
+        sections = Section.objects.all()
+        return render(request, "auctions/createEmployee.html", {
+            "sections": sections
+        })
+    else:
+            employeeName = request.POST["employeeName"]
+            phone = request.POST["phone"]
+            section = request.POST["section"]
+            sectionData = Section.objects.get(sectionName=section)
+
+            imageURL = request.POST["imageURL"]
+            if not imageURL:
+                imageURL = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Question_mark_%28black%29.svg/800px-Question_mark_%28black%29.svg.png"
+            # Create new listing
+            newEmployee = Employee(
+                employeeName=employeeName,
+                phone=phone,
+                imageURL=imageURL,
+                section=sectionData,
+            )
+            newEmployee.save()
+            return HttpResponseRedirect(reverse("employees"))
+
 
 def createListing(request):
     if request.method == "GET":
@@ -117,6 +146,7 @@ def createListing(request):
         )
         newListing.save()
         return HttpResponseRedirect(reverse("active"))
+    
 def createTask(request):
     
     #Load Employees, Sections
@@ -274,7 +304,11 @@ def listing(request, id):
     })
 
 
+# @login_required
+
 def employeePage(request, phone):
+    if not request.user.is_authenticated:
+        return HttpResponseForbidden('You must be logged in to view this page.')
     employee = Employee.objects.get(phone=phone)
     employeeData = Employee.objects.get(phone=phone)
     employeeTasks = EmployeeListing.objects.filter(employee=employee)
@@ -289,11 +323,15 @@ def employeePage(request, phone):
     # print(sortedEmployeeTasks)
     comments = employeeComment.objects.filter(employee=employee)
     comments = comments.order_by('-id')[:10:1]
-
+    if request.user.is_superuser:
+        button_display = True
+    else:
+        button_display = False
     return render(request, "auctions/employeePage.html", {
         "employeeData": employeeData,
          "employeeTasks": employeeTasks,
          "comments": comments,
+        "button_display": button_display,
     })
 
 def employeeComments(request):
@@ -472,6 +510,15 @@ def addEmployeeComment(request, phone):
         message = message
     )
     createComment.save()
+    return HttpResponseRedirect(reverse("employeePage", args=(phone, )))
+
+
+def deleteEmployee(request,phone):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to perform this action.')
+    employee = Employee.objects.get(phone=phone)
+    employee.delete()
+    return HttpResponseRedirect(reverse("employees"))
 
     #ty ML
     # Get the email address of the logged-in user
@@ -494,7 +541,6 @@ def addEmployeeComment(request, phone):
     #     fail_silently=False,
     # )
 
-    return HttpResponseRedirect(reverse("employeePage", args=(phone, )))
 
 
 

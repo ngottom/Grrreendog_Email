@@ -90,6 +90,8 @@ def register(request):
         return render(request, "auctions/register.html")
 
 def createEmployee(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to perform this action.')
     if request.method == "GET":
         sections = Section.objects.all()
         return render(request, "auctions/createEmployee.html", {

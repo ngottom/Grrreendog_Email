@@ -49,6 +49,12 @@
         }
     });
 });
+function confirmDelete() {
+  var result = confirm("Are you sure you want to delete this employee?");
+  if (result) {
+    document.getElementById("delete-form").submit();
+  }
+}
 </script>
 <style>
     #imageURL {
@@ -97,7 +103,7 @@
 {% if button_display %}
 <form action = "{% url 'deleteEmployee' phone=employeeData.phone %}" method="POST">
 {% csrf_token %}
-<a href="{% url 'deleteEmployee' phone=employeeData.phone %}" class="btn btn-danger">Delete Employee</a>
+<a href="{% url 'deleteEmployee' phone=employeeData.phone %}" class="btn btn-danger" onclick="confirmDelete()">Delete Employee</a>
 {% endif %}
 </form>
 
